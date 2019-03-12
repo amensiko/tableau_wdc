@@ -25,6 +25,9 @@
 
     myConnector.getData = function(table, doneCallback) {
     $.getJSON("https://data.nasa.gov/resource/2vr3-k9wn.json", function(resp) {
+
+        var lastId = parseInt(table.incrementValue || -1);
+
         var featrs = resp.features, 
             data = [];
 
