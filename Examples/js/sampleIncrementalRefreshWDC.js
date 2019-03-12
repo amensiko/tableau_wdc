@@ -5,19 +5,22 @@
          console.log("HELLO THERE IM IN SCHEMA");
 
         var cols = [{
-            id: "females",
+            id: "id",
             dataType: tableau.dataTypeEnum.int
-        }, {
+        },  {
             id: "country",
             dataType: tableau.dataTypeEnum.string
+        }, {
+            id: "year",
+            dataType: tableau.dataTypeEnum.int
         }, {
             id: "age",
             dataType: tableau.dataTypeEnum.int
         }, {
-            id: "males",
+            id: "females",
             dataType: tableau.dataTypeEnum.int
         }, {
-            id: "year",
+            id: "males",
             dataType: tableau.dataTypeEnum.int
         }, {
             id: "total",
@@ -28,7 +31,7 @@
              alias: "Incremental Refresh Connector",
              id: "mainTable",
              columns: cols,
-             incrementColumnId: "age"
+             incrementColumnId: "id"
          };
          
          schemaCallback([tableInfo]);
@@ -45,7 +48,7 @@
         var lastId = parseInt(table.incrementValue || -1);
 
         var connectionData = JSON.parse(tableau.connectionData);
-        var max_iterations = connectionData.rows_requested;
+        var max_iterations = connectionData.max_iterations;
 
         //var colors = ["red", "orange", "yellow", "green", "blue", "indigo", "violet"];
         var data = [];
@@ -69,8 +72,8 @@
             data.push({
                 "year": resp[i].year,
                 "country": resp[i].country,
-                "age": id,
-                //"age": resp[i].age,
+                "id": id,
+                "age": resp[i].age,
                 "total": resp[i].total,
                 "females": resp[i].females,
                 "males": resp[i].males
