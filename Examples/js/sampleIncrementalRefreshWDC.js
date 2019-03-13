@@ -7,7 +7,13 @@
         var cols = [{
             id: "id",
             dataType: tableau.dataTypeEnum.int
-        },  {
+        }, {
+            id: "timestamp",
+            dataType: tableau.dataTypeEnum.datetime
+        }, {
+            id: "day",
+            dataType: tableau.dataTypeEnum.datetime
+        }, {
             id: "country",
             dataType: tableau.dataTypeEnum.string
         }, {
@@ -52,16 +58,16 @@
 
         //var colors = ["red", "orange", "yellow", "green", "blue", "indigo", "violet"];
         var data = [];
-        // var now = Date();
-        // date_and_time = new Date();
+        var now = Date();
+        date_and_time = new Date();
         for (var i = 0; i < max_iterations; i++) {
             lastId++;
             var id = lastId;
-            // var millis = date_and_time.getTime();
-            // millis += 1000 * i; //add a second
-            // date_and_time.setTime(millis);
-            // date_only = new Date(date_and_time.getTime());
-            // date_only.setHours(0, 0, 0, 0);
+            var millis = date_and_time.getTime();
+            millis += 1000 * i; //add a second
+            date_and_time.setTime(millis);
+            date_only = new Date(date_and_time.getTime());
+            date_only.setHours(0, 0, 0, 0);
             // data.push({
             //     "id": id,
             //     "x": i,
@@ -70,6 +76,8 @@
             //     "true_or_false": (i % 2 == 0),
             // });
             data.push({
+                "timestamp": date_and_time.toISOString(),
+                "day": date_only.toISOString(),
                 "year": resp[i].year,
                 "country": resp[i].country,
                 "id": id,
