@@ -29,6 +29,8 @@
 
         var connectionData = JSON.parse(tableau.connectionData);
         var max_iterations = connectionData.max_iterations;
+        console.log("LAST ID");
+        console.log(lastId);
 
         var colors = ["red", "orange", "yellow", "green", "blue", "indigo", "violet"];
         var data = [];

@@ -34,7 +34,7 @@
              alias: "Incremental Refresh Connector",
              id: "mainTable",
              columns: cols,
-             incrementColumnId: "id"
+             incrementColumnId: "timestamp"
          };
          
          schemaCallback([tableInfo]);
@@ -48,7 +48,7 @@
 
         console.log("HELLO THERE IM IN DATA");
 
-        var lastId = parseInt(table.incrementValue || -1);
+        var lastId = (table.incrementValue || -1);
 
         var connectionData = JSON.parse(tableau.connectionData);
         var max_iterations = connectionData.max_iterations;
@@ -63,16 +63,24 @@
         console.log(max_iterations);
 
         var data = [];
-        var now = Date();
+        //var now = Date();
         date_and_time = new Date();
-        for (var i = 0; i < max_iterations; i++) {
+        //var millis = date_and_time.getTime();
+        var now = date_and_time.toISOString();
+        var i = 0;
+        for (var d = new Date(max_iterations); (d <= date_and_time) && (i < 101); d.setDate(d.getDate() + 1)) {
+            console.log("DDDDDDDDD");
+            console.log(d);
+        //while (dt >= max_iterations && i < 101) {
+        //for (var i = 0; i < max_iterations; i++) {
             lastId++;
             var id = lastId;
-            var millis = date_and_time.getTime();
+            //var millis = date_and_time.getTime();
             //millis += 1000 * i; //add a second
-            date_and_time.setTime(millis);
-            date_only = new Date(date_and_time.getTime());
-            date_only.setHours(0, 0, 0, 0);
+            //date_and_time.setTime(millis);
+            //date_only = new Date(date_and_time.getTime());
+            //date_only.setHours(0, 0, 0, 0);
+            //console.log(i);
             data.push({
                 "timestamp": date_and_time.toISOString(),
                 //"timestamp_month": date_only.toISOString(),
@@ -84,7 +92,10 @@
                 "females": resp[i].females,
                 "males": resp[i].males
             });
-            //console.log(resp[i]);
+            i = i + 1;
+            //millis = date_and_time.getTime();
+            //dt = date_and_time.toISOString();
+            //console.log(date_and_time);
         }
 
         table.appendRows(data);
@@ -93,25 +104,26 @@
 };
 
     setupConnector = function() {
-        var max_iterations = $("#max_iterations").val();
+       // var max_iterations = $("#max_iterations").val();
+
+        //var now = Date();
+        date_and_time = new Date();
+        //var millis = date_and_time.getTime();
+        //date_and_time.setTime(millis);
         
-        if (max_iterations) {
+        //if (max_iterations) {
             var connectionData = {
-                "max_iterations": parseInt(max_iterations)
+                "max_iterations": date_and_time//.toISOString()//parseInt(max_iterations)
             };
             tableau.connectionData = JSON.stringify(connectionData);
             tableau.submit();
-        }
+       // }
      };
 
     tableau.registerConnector(myConnector);
 
     $(document).ready(function() {
         $("#submitButton").click(function() { // This event fires when a button is clicked
-            setupConnector();
-        });
-        $('#inputForm').submit(function(event) {
-            event.preventDefault();
             setupConnector();
         });
     });

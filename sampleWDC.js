@@ -42,17 +42,6 @@
             console.log(resp[i]);
         }
 
-        //console.log(resp);
-
-        // Iterate over the JSON object
-        // for (var i = 0, len = featrs.length; i < len; i++) {
-        //     data.push({
-        //         "designation": featrs[i].designation,
-        //         "discovery_date": featrs[i].discovery_date,
-        //         "orbit_class": featrs[i].orbit_class
-        //     });
-        // }
-
         table.appendRows(data);
         doneCallback();
     });
