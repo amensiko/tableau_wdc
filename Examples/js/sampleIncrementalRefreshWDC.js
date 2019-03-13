@@ -9,10 +9,10 @@
             dataType: tableau.dataTypeEnum.int
         }, {
             id: "timestamp",
-            dataType: tableau.dataTypeEnum.datetime
+            dataType: tableau.dataTypeEnum.string
         }, {
             id: "day",
-            dataType: tableau.dataTypeEnum.datetime
+            dataType: tableau.dataTypeEnum.string
         }, {
             id: "country",
             dataType: tableau.dataTypeEnum.string
@@ -56,7 +56,6 @@
         var connectionData = JSON.parse(tableau.connectionData);
         var max_iterations = connectionData.max_iterations;
 
-        //var colors = ["red", "orange", "yellow", "green", "blue", "indigo", "violet"];
         var data = [];
         var now = Date();
         date_and_time = new Date();
@@ -68,13 +67,6 @@
             date_and_time.setTime(millis);
             date_only = new Date(date_and_time.getTime());
             date_only.setHours(0, 0, 0, 0);
-            // data.push({
-            //     "id": id,
-            //     "x": i,
-            //     "day": date_only.toISOString(),
-            //     "day_and_time": date_and_time.toISOString(),
-            //     "true_or_false": (i % 2 == 0),
-            // });
             data.push({
                 "timestamp": date_and_time.toISOString(),
                 "day": date_only.toISOString(),
