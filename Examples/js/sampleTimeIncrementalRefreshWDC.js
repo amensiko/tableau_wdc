@@ -79,11 +79,11 @@ information.lastId = 0;
         console.log("DATE ONLY: " + date_only);
         console.log("information.lastId: " + information.lastId);
         var start = information.lastId;
-        for (var i = start; i < start+max_iterations && information.lastId < 101; i++) {
+        for (var i = start; i < start+max_iterations && information.lastId < resp.length; i++) {
             //information.lastId++;
             //lastId++; //=time_ticker
             var id = information.lastId;
-            console.log("NEW IDDDDD " + id);
+            //console.log("NEW IDDDDD " + id);
             //var millis = date_and_time.getTime();
             //millis += 1000 * i; //add a second
             //date_and_time.setTime(millis);
