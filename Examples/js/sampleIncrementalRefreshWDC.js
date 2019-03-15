@@ -50,14 +50,11 @@
 
         var lastId = parseInt(table.incrementValue || -1);
 
+        console.log("LAST ID");
+        console.log(lastId);
+
         var connectionData = JSON.parse(tableau.connectionData);
         var max_iterations = connectionData.max_iterations;
-
-        console.log("incrementValue");
-        console.log(table.incrementValue);
-
-        console.log("connectionData");
-        console.log(connectionData);
 
         console.log("max_iterations");
         console.log(max_iterations);
@@ -69,20 +66,20 @@
             lastId++;
             var id = lastId;
             var millis = date_and_time.getTime();
-            //millis += 1000 * i; //add a second
+            millis += 1000 * i; //add a second
             date_and_time.setTime(millis);
             date_only = new Date(date_and_time.getTime());
             date_only.setHours(0, 0, 0, 0);
             data.push({
                 "timestamp": date_and_time.toISOString(),
                 //"timestamp_month": date_only.toISOString(),
-                "census_year": resp[i].year,
-                "country": resp[i].country,
+                "census_year": resp[id].year,
+                "country": resp[id].country,
                 "id": id,
-                "age": resp[i].age,
-                "total": resp[i].total,
-                "females": resp[i].females,
-                "males": resp[i].males
+                "age": resp[id].age,
+                "total": resp[id].total,
+                "females": resp[id].females,
+                "males": resp[id].males
             });
             //console.log(resp[i]);
         }
