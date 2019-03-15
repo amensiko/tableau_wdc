@@ -1,3 +1,6 @@
+window.information = {};
+information.lastId = 0;
+
 (function() {
     var myConnector = tableau.makeConnector();
     
@@ -45,52 +48,61 @@
     $.getJSON("http://api.population.io/1.0/population/2010/United%20States/?format=json", function(resp) {
 
         console.log("HELLO THERE IM IN DATA");
+        //console.log(MY.language);
 
         var time_ticker = (table.incrementValue || new Date()); //ticking as time goes on = lastTimestamp
 
         //var lastId = parseInt(table.incrementValue || -1);
 
         console.log("LAST TIMESTAMP");
-        console.log(lastTimestamp);
+        console.log(time_ticker);
 
-        var connectionData = JSON.parse(tableau.connectionData);
-        var orig_date = connectionData.orig_date;  //always staying the same, always the earlier time = max_iterations
-        var lastId = connectionData.lastId; 
+        // var connectionData = JSON.parse(tableau.connectionData);
+        // var orig_date = connectionData.orig_date;  //always staying the same, always the earlier time = max_iterations
+        // var lastId = connectionData.lastId; 
 
-        console.log("max_iterations");
-        console.log(max_iterations);
-        console.log("lastId");
-        console.log(lastId);
+        // console.log("orig_date");
+        // console.log(orig_date);
+        // console.log("lastId");
+        // console.log(lastId);
 
-        var data = [];
+        var data = [];   //TODO: WE NEED TO SAVE AT WHICH i WE STOP
         var now = Date();
         date_and_time = new Date();
 
-        console.log("D AND T");
-        console.log(date_and_time);
-        for (var i = 0; i < 10 && lastId < 100; i++) {
-            lastId++;
-            var id = lastId;
-            console.log("LASTID " + lastId);
+        date_only = new Date(date_and_time.getTime());
+        date_only.setHours(0, 0, 0, 0);
+
+        var max_iterations = 5;
+
+        console.log("D AND T: " + date_and_time);
+        console.log("DATE ONLY: " + date_only);
+        console.log("information.lastId: " + information.lastId);
+        var start = information.lastId;
+        for (var i = start; i < start+max_iterations && information.lastId < 101; i++) {
+            //information.lastId++;
+            //lastId++; //=time_ticker
+            var id = information.lastId;
+            console.log("NEW IDDDDD " + id);
             //var millis = date_and_time.getTime();
             //millis += 1000 * i; //add a second
             //date_and_time.setTime(millis);
             //date_only = new Date(date_and_time.getTime());
             //date_only.setHours(0, 0, 0, 0);
             //if (date_and_time > lastTimestamp) {
-            if (max_iterations > lastTimestamp) {
-                data.push({
-                    "timestamp": date_and_time.toISOString(),
-                //"timestamp_month": date_only.toISOString(),
-                    "census_year": resp[id].year,
-                    "country": resp[id].country,
-                    "id": id,
-                    "age": resp[id].age,
-                    "total": resp[id].total,
-                    "females": resp[id].females,
-                    "males": resp[id].males
-                });
-            }
+            //if (max_iterations > lastTimestamp) {
+            data.push({
+                "timestamp": date_and_time,//date_only,//time_ticker,
+                "census_year": resp[i].year,
+                "country": resp[i].country,
+                "id": id,
+                "age": resp[i].age,
+                "total": resp[i].total,
+                "females": resp[i].females,
+                "males": resp[i].males
+            });
+            information.lastId++;
+            //}
             //console.log(resp[i]);
         }
 
@@ -165,7 +177,7 @@
        // var max_iterations = $("#max_iterations").val();
 
         //var now = Date();
-        date_and_time = new Date();
+        var date_and_time = new Date();
         var lastId = -1;
         //var millis = date_and_time.getTime();
         //date_and_time.setTime(millis);

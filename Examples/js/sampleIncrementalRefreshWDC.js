@@ -55,13 +55,18 @@
 
         var connectionData = JSON.parse(tableau.connectionData);
         var max_iterations = connectionData.max_iterations;
+        var orig_date = connectionData.orig_date; 
 
         console.log("max_iterations");
         console.log(max_iterations);
+        console.log("orig_date");
+        console.log(orig_date);
 
         var data = [];
         var now = Date();
         date_and_time = new Date();
+        console.log("D AND T");
+        console.log(date_and_time);
         for (var i = 0; i < max_iterations  && lastId < 100; i++) {
             lastId++;
             var id = lastId;
@@ -91,10 +96,12 @@
 
     setupConnector = function() {
         var max_iterations = $("#max_iterations").val();
+        var date_and_time = new Date();
         
         if (max_iterations) {
             var connectionData = {
-                "max_iterations": parseInt(max_iterations)
+                "max_iterations": parseInt(max_iterations),
+                "orig_date": date_and_time
             };
             tableau.connectionData = JSON.stringify(connectionData);
             tableau.submit();
