@@ -62,7 +62,7 @@
         var data = [];
         var now = Date();
         date_and_time = new Date();
-        for (var i = 0; i < max_iterations; i++) {
+        for (var i = 0; i < max_iterations  && lastId < 100; i++) {
             lastId++;
             var id = lastId;
             var millis = date_and_time.getTime();

@@ -41,61 +41,57 @@
      };
 
 
-    // With this sample we will generate some sample date for the columns: id, x, day, date_and _time, true_or_false, and color.
-    // The user input for the max iterations determines the number of rows to add. 
     myConnector.getData = function(table, doneCallback) {
     $.getJSON("http://api.population.io/1.0/population/2010/United%20States/?format=json", function(resp) {
 
         console.log("HELLO THERE IM IN DATA");
 
-        var lastId = (table.incrementValue || -1);
+        var time_ticker = (table.incrementValue || new Date()); //ticking as time goes on = lastTimestamp
+
+        //var lastId = parseInt(table.incrementValue || -1);
+
+        console.log("LAST TIMESTAMP");
+        console.log(lastTimestamp);
 
         var connectionData = JSON.parse(tableau.connectionData);
-        var max_iterations = connectionData.max_iterations;
-
-        console.log("incrementValue");
-        console.log(table.incrementValue);
-
-        console.log("connectionData");
-        console.log(connectionData);
+        var orig_date = connectionData.orig_date;  //always staying the same, always the earlier time = max_iterations
+        var lastId = connectionData.lastId; 
 
         console.log("max_iterations");
         console.log(max_iterations);
+        console.log("lastId");
+        console.log(lastId);
 
         var data = [];
-        //var now = Date();
+        var now = Date();
         date_and_time = new Date();
-        //var millis = date_and_time.getTime();
-        var now = date_and_time.toISOString();
-        var i = 0;
-        for (var d = new Date(max_iterations); (d <= date_and_time) && (i < 101); d.setDate(d.getDate() + 1)) {
-            console.log("DDDDDDDDD");
-            console.log(d);
-        //while (dt >= max_iterations && i < 101) {
-        //for (var i = 0; i < max_iterations; i++) {
+
+        console.log("D AND T");
+        console.log(date_and_time);
+        for (var i = 0; i < 10 && lastId < 100; i++) {
             lastId++;
             var id = lastId;
+            console.log("LASTID " + lastId);
             //var millis = date_and_time.getTime();
             //millis += 1000 * i; //add a second
             //date_and_time.setTime(millis);
             //date_only = new Date(date_and_time.getTime());
             //date_only.setHours(0, 0, 0, 0);
-            //console.log(i);
-            data.push({
-                "timestamp": date_and_time.toISOString(),
+            //if (date_and_time > lastTimestamp) {
+            if (max_iterations > lastTimestamp) {
+                data.push({
+                    "timestamp": date_and_time.toISOString(),
                 //"timestamp_month": date_only.toISOString(),
-                "census_year": resp[i].year,
-                "country": resp[i].country,
-                "id": id,
-                "age": resp[i].age,
-                "total": resp[i].total,
-                "females": resp[i].females,
-                "males": resp[i].males
-            });
-            i = i + 1;
-            //millis = date_and_time.getTime();
-            //dt = date_and_time.toISOString();
-            //console.log(date_and_time);
+                    "census_year": resp[id].year,
+                    "country": resp[id].country,
+                    "id": id,
+                    "age": resp[id].age,
+                    "total": resp[id].total,
+                    "females": resp[id].females,
+                    "males": resp[id].males
+                });
+            }
+            //console.log(resp[i]);
         }
 
         table.appendRows(data);
@@ -103,17 +99,81 @@
     });  
 };
 
+    // With this sample we will generate some sample date for the columns: id, x, day, date_and _time, true_or_false, and color.
+    // The user input for the max iterations determines the number of rows to add. 
+//     myConnector.getData = function(table, doneCallback) {
+//     $.getJSON("http://api.population.io/1.0/population/2010/United%20States/?format=json", function(resp) {
+
+//         console.log("HELLO THERE IM IN DATA");
+
+//         var lastId = (table.incrementValue || -1);
+
+//         var connectionData = JSON.parse(tableau.connectionData);
+//         var max_iterations = connectionData.max_iterations;
+
+//         console.log("incrementValue");
+//         console.log(table.incrementValue);
+
+//         console.log("connectionData");
+//         console.log(connectionData);
+
+//         console.log("max_iterations");
+//         console.log(max_iterations);
+
+//         var data = [];
+//         //var now = Date();
+//         date_and_time = new Date();
+//         //var millis = date_and_time.getTime();
+//         var now = date_and_time.toISOString();
+//         var i = 0;
+//         for (var d = new Date(max_iterations); (d <= date_and_time) && (i < 101); d.setDate(d.getDate() + 1)) {
+//             console.log("DDDDDDDDD");
+//             console.log(d);
+//         //while (dt >= max_iterations && i < 101) {
+//         //for (var i = 0; i < max_iterations; i++) {
+//             lastId++;
+//             var id = lastId;
+//             //var millis = date_and_time.getTime();
+//             //millis += 1000 * i; //add a second
+//             //date_and_time.setTime(millis);
+//             //date_only = new Date(date_and_time.getTime());
+//             //date_only.setHours(0, 0, 0, 0);
+//             //console.log(i);
+//             data.push({
+//                 "timestamp": date_and_time.toISOString(),
+//                 //"timestamp_month": date_only.toISOString(),
+//                 "census_year": resp[i].year,
+//                 "country": resp[i].country,
+//                 "id": id,
+//                 "age": resp[i].age,
+//                 "total": resp[i].total,
+//                 "females": resp[i].females,
+//                 "males": resp[i].males
+//             });
+//             i = i + 1;
+//             //millis = date_and_time.getTime();
+//             //dt = date_and_time.toISOString();
+//             //console.log(date_and_time);
+//         }
+
+//         table.appendRows(data);
+//         doneCallback(); 
+//     });  
+// };
+
     setupConnector = function() {
        // var max_iterations = $("#max_iterations").val();
 
         //var now = Date();
         date_and_time = new Date();
+        var lastId = -1;
         //var millis = date_and_time.getTime();
         //date_and_time.setTime(millis);
         
         //if (max_iterations) {
             var connectionData = {
-                "max_iterations": date_and_time//.toISOString()//parseInt(max_iterations)
+                "orig_date": date_and_time,//.toISOString()//parseInt(max_iterations)
+                "lastId": lastId
             };
             tableau.connectionData = JSON.stringify(connectionData);
             tableau.submit();
