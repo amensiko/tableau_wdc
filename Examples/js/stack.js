@@ -9,7 +9,12 @@ $.ajaxSetup({
     headers: {'Authorization': "Basic " + btoa("my_username" + ":" + "my_password")}
 })
 
-     
+  //    myConnector.init = function(initCallback) {
+  //     tableau.authType = tableau.authTypeEnum.basic;
+  //     tableau.username = "my_username";
+  //     tableau.password = "my_pass";
+  //     initCallback();
+  // }
 
     // Define the schema
     myConnector.getSchema = function (schemaCallback) {  //schema = mapping of data
@@ -50,7 +55,7 @@ $.ajaxSetup({
                 "discovery_date": resp[i].discovery_date,
                 "orbit_class": resp[i].orbit_class
             });
-            console.log(resp[i]);
+            //console.log(resp[i]);
         }
 
         table.appendRows(data);
