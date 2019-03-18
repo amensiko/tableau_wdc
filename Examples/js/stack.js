@@ -4,17 +4,56 @@
 // Create the connector object
     var myConnector = tableau.makeConnector();
 
-//Setting up the Basic Authorization Header
-$.ajaxSetup({
-    headers: {'Authorization': "Basic " + btoa("my_username" + ":" + "my_password")}
-})
+    myConnector.init = function(initCallback) {
+      tableau.authType = tableau.authTypeEnum.basic;
 
-  //    myConnector.init = function(initCallback) {
-  //     tableau.authType = tableau.authTypeEnum.basic;
-  //     tableau.username = "my_username";
-  //     tableau.password = "my_pass";
-  //     initCallback();
-  // }
+      // If we are in the auth phase we only want to show the UI needed for auth
+      if (tableau.phase == tableau.phaseEnum.authPhase) {
+        $("#getvenuesbutton").css('display', 'none');
+      }
+
+      // if (tableau.phase == tableau.phaseEnum.gatherDataPhase) {
+      //   // If API that WDC is using has an enpoint that checks
+      //   // the validity of an access token, that could be used here.
+      //   // Then the WDC can call tableau.abortForAuth if that access token
+      //   // is invalid.
+      // }
+
+      //var accessToken = Cookies.get("accessToken");
+      //console.log("Access token is '" + accessToken + "'");
+      //var hasAuth = (accessToken && accessToken.length > 0) || tableau.password.length > 0;
+      //updateUIWithAuthState(true);
+
+      initCallback();
+
+      // If we are not in the data gathering phase, we want to store the token
+      // This allows us to access the token in the data gathering phase
+      if (tableau.phase == tableau.phaseEnum.interactivePhase || tableau.phase == tableau.phaseEnum.authPhase) {
+          //if (hasAuth) {
+              tableau.password = "password";
+              tableau.username = "username";
+
+              if (tableau.phase == tableau.phaseEnum.authPhase) {
+                // Auto-submit here if we are in the auth phase
+                tableau.submit()
+              }
+
+              return;
+         // }
+      }
+  };
+
+//Setting up the Basic Authorization Header
+// $.ajaxSetup({
+//     headers: {'Authorization': "Basic " + btoa("my_username" + ":" + "my_password")}
+// })
+
+//      myConnector.init = function(initCallback) {
+//       tableau.authType = tableau.authTypeEnum.basic;
+//       tableau.username = "my_username";
+//       tableau.password = "my_pass";
+//       initCallback();
+//   }
 
     // Define the schema
     myConnector.getSchema = function (schemaCallback) {  //schema = mapping of data
