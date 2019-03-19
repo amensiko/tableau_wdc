@@ -1,47 +1,15 @@
 (function() {
-
+    
 
 // Create the connector object
     var myConnector = tableau.makeConnector();
 
     myConnector.init = function(initCallback) {
       tableau.authType = tableau.authTypeEnum.basic;
-
-      // If we are in the auth phase we only want to show the UI needed for auth
-      if (tableau.phase == tableau.phaseEnum.authPhase) {
-        $("#getvenuesbutton").css('display', 'none');
-      }
-
-      // if (tableau.phase == tableau.phaseEnum.gatherDataPhase) {
-      //   // If API that WDC is using has an enpoint that checks
-      //   // the validity of an access token, that could be used here.
-      //   // Then the WDC can call tableau.abortForAuth if that access token
-      //   // is invalid.
-      // }
-
-      //var accessToken = Cookies.get("accessToken");
-      //console.log("Access token is '" + accessToken + "'");
-      //var hasAuth = (accessToken && accessToken.length > 0) || tableau.password.length > 0;
-      //updateUIWithAuthState(true);
-
       initCallback();
+    };
 
-      // If we are not in the data gathering phase, we want to store the token
-      // This allows us to access the token in the data gathering phase
-      if (tableau.phase == tableau.phaseEnum.interactivePhase || tableau.phase == tableau.phaseEnum.authPhase) {
-          //if (hasAuth) {
-              tableau.password = "password";
-              tableau.username = "username";
 
-              if (tableau.phase == tableau.phaseEnum.authPhase) {
-                // Auto-submit here if we are in the auth phase
-                tableau.submit()
-              }
-
-              return;
-         // }
-      }
-  };
 
 //Setting up the Basic Authorization Header
 // $.ajaxSetup({
@@ -105,6 +73,9 @@
     tableau.registerConnector(myConnector);
     // Create event listeners for when the user submits the form
     $(document).ready(function() {
+        var accessToken = Cookies.get("accessToken");
+        var hasAuth = accessToken && accessToken.length > 0;
+        updateUIWithAuthState(hasAuth);
         $("#submitButton").click(function() {
             tableau.connectionName = "Storage"; // This will be the data source name in Tableau
             tableau.submit(); // This sends the connector object to Tableau
