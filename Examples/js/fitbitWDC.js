@@ -44,7 +44,6 @@
         tableau.submit();
     };
 
-    //Define the schema
     myConnector.getSchema = function(schemaCallback) {
         var cols = [{
             id: "activityMinute",
@@ -76,7 +75,6 @@
         };
         
         activity = steps;
-        var activityDetail = '1min'
 
         var counter = 0;
         getFitbitData = function(counter) {
@@ -85,54 +83,50 @@
             date.setDate(date.getDate() - counter);
             var d = date.toISOString().substring(0, 10);
 
-                url = 'https://api.fitbit.com/1/user/-/activities/steps/date/' + d + '/1d/1min.json';
-                $.ajax({
-                    url: url,
-                    dataType: 'json',
-                    type: 'GET',
-                    headers: {
-                        'Authorization': 'Bearer ' + access_token,
-                    },
-                    success: function(data) {
-                        var activities = data[activity.activities].dataset;
-                        for (var i = 0; i < activities.length; i++) {
-                            var entry = {};
-                            time = activities[i].time;
-                            date.setHours(time.substring(0, 2));
-                            date.setMinutes(time.substring(3, 5));
-                            date.setSeconds(0);
-                            entry.activityMinute = new Date(date);
-                            entry[activity.category] = activities[i].value;
-                            activityArray.push(entry);
-                        }
-                        table.appendRows(activityArray)
-                        counter++;
-                        if (counter == days) {
-                            doneCallback();
-                        } else {
-                            getFitbitData(counter);
-                        }
-                    },
-                });
-
+            url = 'https://api.fitbit.com/1/user/-/activities/steps/date/' + d + '/1d/1min.json';
+            $.ajax({
+                url: url,
+                dataType: 'json',
+                type: 'GET',
+                headers: {
+                    'Authorization': 'Bearer ' + access_token,
+                },
+                success: function(data) {
+                    var activities = data[activity.activities].dataset;
+                    for (var i = 0; i < activities.length; i++) {
+                        var entry = {};
+                        time = activities[i].time;
+                        date.setHours(time.substring(0, 2));
+                        date.setMinutes(time.substring(3, 5));
+                        date.setSeconds(0);
+                        entry.activityMinute = new Date(date);
+                        entry[activity.category] = activities[i].value;
+                        activityArray.push(entry);
+                    }
+                    table.appendRows(activityArray)
+                    counter++;
+                    if (counter == days) {
+                        doneCallback();
+                    } else {
+                        getFitbitData(counter);
+                    }
+                },
+            });
         }
         getFitbitData(counter);
     };
 
     tableau.registerConnector(myConnector);
 
-    function getQueryParams(qs) {
-        qs = qs.split("+").join(" ");
-
-        var params = {},
+    function getQueryParams(qer) {
+        qer = qer.split("+").join(" ");
+        var pars = {},
             tokens,
             re = /[?&]?([^=]+)=([^&]*)/g;
-
-        while (tokens = re.exec(qs)) {
-            params[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
+        while (tokens = re.exec(qer)) {
+            pars[decodeURIComponent(tokens[1])] = decodeURIComponent(tokens[2]);
         }
-
-        return params;
+        return pars;
     }
 
     $(document).ready(function () {      //The jQuery $(document).ready function runs some code when the page loads
