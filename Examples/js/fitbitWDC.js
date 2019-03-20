@@ -13,13 +13,11 @@
                 var access_token = query["http://files.tableaujunkie.com/fitbit/html/fitbitconnect.html?access_token"];
                 Auth = true;
                 tableau.password = access_token;
-                $('.section-description').html("Thanks for authenticating!</br>How many days of data?.<p class='centre'></br><label for='days'># of days:  </label><input type='number' name='days' id='days' min='0' max='150' step='1' value='7' style='width: 70px;'/></p>Press the button to get your Fitbit data</br></br><button type='button' class='btn btn-primary' id='getData'>Get Fitbit Data!</a>");
+                $('.section-description').html("How many days of data?.<p class='centre'></br><label for='days'># of days:  </label><input type='number' name='days' id='days' min='0' max='150' step='1' value='7' style='width: 70px;'/></p>Press the button to get your Fitbit data</br></br><button type='button' class='btn btn-primary' id='getData'>Get Fitbit Data!</a>");
                 $('#getData').bind('click', function() {
                     days = $('#days').val()
                     myConnector.setConnection("", query["user_id"], days);
                     if (tableau.phase == tableau.phaseEnum.authPhase) {
-                        // Auto-submit here if we are in the auth phase
-                        console.log("Entering Auth Phase");
                         tableau.submit();
                     }
                 })
@@ -137,7 +135,13 @@
         return params;
     }
 
-    $(document).ready(function() {
-        $('.button').hide();
+    $(document).ready(function () {      //The jQuery $(document).ready function runs some code when the page loads
+        $('.button').click(function () {
+            tableau.connectionName = "Fitbit Activity";
+            tableau.submit();
+        });
     });
+    // $(document).ready(function() {
+    //     $('.button').hide();
+    // });
 })();
