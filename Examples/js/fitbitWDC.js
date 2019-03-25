@@ -13,7 +13,7 @@
                 var access_token = query["http://files.tableaujunkie.com/fitbit/html/fitbitconnect.html?access_token"];
                 Auth = true;
                 tableau.password = access_token;
-                $('.section-description').html("How many days of data?.<p class='centre'></br><label for='days'># of days:  </label><input type='number' name='days' id='days' min='0' max='150' step='1' value='7' style='width: 70px;'/></p>Press the button to get your Fitbit data</br></br><button type='button' class='btn btn-primary' id='getData'>Get Fitbit Data!</a>");
+                $('.section-description').html("How many days of data?<p class='centre'></br><label for='days'># of days:  </label><input type='number' name='days' id='days' min='0' max='150' step='1' value='7' style='width: 70px;'/></p>Press the button to get your Fitbit data</br></br><button type='button' class='btn btn-primary' id='getData'>Get Fitbit Data!</a>");
                 $('#getData').bind('click', function() {
                     days = $('#days').val()
                     myConnector.setConnection("", query["user_id"], days);
